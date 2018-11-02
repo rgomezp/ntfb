@@ -4,21 +4,34 @@ const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
 var router = express.Router();
 
+function getResponse(counter, message){
+  switch(counter){
+    case 0:
+      return "Hello! You may qualify for the Supplemental Nutrition Assistance Program (SNAP). In other words, free food! Would you like to continue? (reply yes or no)";
+      break;
+    case 1:
+      if(message.toLowerCase() == 'yes' || message.toLowerCase() == 'y'){
+        return "Great! Let's get started."
+        break;
+      }
+    default:
+      return "Something went wrong";
+
+  }
+  return '$INVALID$'; // invalid response
+}
+
 /* GET home page. */
 router.post('/sms', function(req, res, next) {
-  console.log(req.body.Body);
+  let message = req.body.Body;
   const smsCount = req.session.counter || 0;
 
-  var message = 'Hello, thanks for the new message.';
-
-  if(smsCount > 0) {
-    message = 'Hello, thanks for message number ' + (smsCount + 1);
-  }
+  var response = getResponse(smsCount, message);
 
   req.session.counter = smsCount + 1;
 
   const twiml = new MessagingResponse();
-  twiml.message(message);
+  twiml.message(response);
 
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
