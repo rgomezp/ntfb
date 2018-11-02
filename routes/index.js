@@ -6,6 +6,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.post('/sms', function(req, res, next) {
+  console.log(req.body.Body);
   const smsCount = req.session.counter || 0;
 
   var message = 'Hello, thanks for the new message.';
