@@ -33,6 +33,9 @@ function getResponse(counter, message, lang){
       if(message === "no"){
         return questions[0][lang];
       }
+      if(message === "yes"){
+        return "$FINISHED$";
+      }
       break;
     // D O   Y O U   M A K E   L E S S   T H A N
     case 3:
@@ -69,13 +72,13 @@ function setLang(value){
 
 /* GET home page. */
 router.post('/sms', function(req, res, next) {
-  let message = req.body.Body.toLowerCase();
+  let message = req.body.Body.toLowerCase().split(' ')[0];
   console.log("message:", message);
   const smsCount = req.session.counter || 0;
 
   var response = getResponse(smsCount, message, req.session.language);
   console.log('initial resp:', response);
-  
+
   // OVERRIDE RESPONSE ONCE LANGUAGE IS SET
   if(response !== '$INVALID$' && smsCount == 1){
     req.session.language = response;
