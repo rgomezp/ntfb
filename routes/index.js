@@ -16,7 +16,7 @@ function getResponse(counter, message, lang){
       "¿Es el ingreso de su hogar menos de "
     ],
     ["You qualify for ", "Usted es elegible para recibir"],
-    ["While you don't qualify for automatic benefits, your family may still be eligibile for the SNAP program. Please call 214-269-0906 to complete your application."]
+    ["While you dont qualify for automatic benefits, your family may still be eligibile for the SNAP program. Please call 2142690906 to complete your application."]
   ]
 
   switch(counter){
@@ -43,7 +43,7 @@ function getResponse(counter, message, lang){
         5:"3958",
       }
       let value = famIncomes[Number(message)];
-      return questions[1][lang]+value;
+      return questions[1][lang]+value+'?';
       break;
     case 4:
       if(message === "yes" || message === "si"){
@@ -78,10 +78,10 @@ router.post('/sms', function(req, res, next) {
     response = response === 0 ? "Do you get state benefits now? (yes/no)":"¿Usted recibe beneficios del estado actualmente? (si/no)";
   }
 
-  console.log("response:", response);
   // send other questions
   if(response !== '$INVALID$') req.session.counter = smsCount + 1;
   else response = "Sorry, I didn't get that. Please provide a valid response.";
+  console.log("response:", response);
 
   const twiml = new MessagingResponse();
   twiml.message(response);
