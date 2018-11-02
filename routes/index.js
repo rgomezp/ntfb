@@ -26,6 +26,7 @@ function getResponse(counter, message, lang){
     // L A N G U A G E  S E L E C T O R
     case 1:
       if(message === '1' || message === '2') return setLang(message);
+      else return "$INVALID$";
       break;
     // D O   Y O U   A L R E A D Y  R E C E I V E  B E N E F I T S?
     case 2:
@@ -62,7 +63,8 @@ function getResponse(counter, message, lang){
 
 function setLang(value){
   if(value === '1') return 0; // english
-  if(value === '2') return 1; // spanish
+  else if(value === '2') return 1; // spanish
+  else return -1; // not valid
 }
 
 /* GET home page. */
