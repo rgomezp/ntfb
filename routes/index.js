@@ -37,12 +37,13 @@ function getResponse(counter, message, lang){
     case 3:
       // get value depending on family size
 
-      return questions[1][lang]+//value
+      return questions[1][lang]+'12345'//value
       break;
     case 4:
       if(message === "yes" || message === "si"){
         return questions[2][lang];
       }
+      break;
     default:
       return "Something went wrong";
   }
