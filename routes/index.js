@@ -21,7 +21,7 @@ function getResponse(counter, message, lang){
   // INITIAL MESSAGES
   switch(counter){
     case 0:
-      return "Hello! You may qualify for the Supplemental Nutrition Assistance Program (SNAP). To continue in English, send 1 \nHola! Su hogar pude ser eligible para SNAP. Para continuar en Español, envie 2";
+      return "Hello! You may qualify for the Supplemental Nutrition Assistance Program (SNAP). To continue in English, send 1 \n---------\n Hola! Su hogar pude ser eligible para SNAP. Para continuar en Español, envie 2";
       break;
     case 1:
       if(message === '1' || message === '2') return setLang(message);
@@ -45,7 +45,7 @@ function getResponse(counter, message, lang){
       }
       break;
     default:
-      return "Something went wrong";
+      return "Please call __ if you have any questions regarding the SNAP program";
   }
   return '$INVALID$'; // invalid response
 }
