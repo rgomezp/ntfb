@@ -5,7 +5,7 @@ const MessagingResponse = require('twilio').twiml.MessagingResponse;
 var router = express.Router();
 
 /* GET home page. */
-router.get('/sms', function(req, res, next) {
+router.post('/sms', function(req, res, next) {
   const smsCount = req.session.counter || 0;
 
   var message = 'Hello, thanks for the new message.';
