@@ -74,9 +74,10 @@ router.post('/sms', function(req, res, next) {
   const smsCount = req.session.counter || 0;
 
   var response = getResponse(smsCount, message, req.session.language);
-
+  console.log('initial resp:', response);
+  
   // OVERRIDE RESPONSE ONCE LANGUAGE IS SET
-  if(smsCount == 1){
+  if(response !== '$INVALID$' && smsCount == 1){
     req.session.language = response;
     response = response === 0 ? "Do you get state benefits now? (yes/no)":"¿Usted recibe beneficios del estado actualmente? (si/no)";
   }
