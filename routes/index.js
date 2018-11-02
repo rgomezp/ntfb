@@ -51,8 +51,8 @@ function getResponse(counter, message, lang){
 }
 
 function setLang(value){
-  if(value === 1) return 0; // english
-  if(value === 2) return 1; // spanish
+  if(value === '1') return 0; // english
+  if(value === '2') return 1; // spanish
 }
 
 /* GET home page. */
@@ -66,7 +66,7 @@ router.post('/sms', function(req, res, next) {
   // set language, send question 1
   if(smsCount == 1){
     req.session.language = response;
-    response = response === 0 ? "Do you get state benefits now? (yes/no)":"/¿Usted recibe beneficios del estado actualmente? (si/no)";
+    response = response === 0 ? "Do you get state benefits now? (yes/no)":"¿Usted recibe beneficios del estado actualmente? (si/no)";
   }
 
   console.log("response:", response);
