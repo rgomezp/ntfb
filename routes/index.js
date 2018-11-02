@@ -15,10 +15,10 @@ function getResponse(counter, message, lang){
       "Is your household income less than ",
       "¿Es el ingreso de su hogar menos de "
     ],
-    ["You qualify for ", "Usted es elegible para recibir"]
+    ["You qualify for ", "Usted es elegible para recibir"],
+    ["While you don't qualify for automatic benefits, your family may still be eligibile for the SNAP program. Please call 214-269-0906 to complete your application."]
   ]
 
-  // INITIAL MESSAGES
   switch(counter){
     case 0:
       return "Hello! You may qualify for the Supplemental Nutrition Assistance Program (SNAP). To continue in English, send 1 \n---------\n Hola! Su hogar pude ser eligible para SNAP. Para continuar en Español, envie 2";
@@ -28,24 +28,33 @@ function getResponse(counter, message, lang){
       break;
     case 2:
       if(message === "yes" || message === "si"){
-        return "Please call ___";
+        return "Please call 214-269-0906 to complete your application.";
       }
       if(message === "no"){
         return questions[0][lang];
       }
       break;
     case 3:
-      // get value depending on family size
-
-      return questions[1][lang]+'12345'//value
+      let famIncomes = {
+        1:"$1659",
+        2:"$2233",
+        3:"$2808",
+        4:"3383",
+        5:"3958",
+      }
+      let value = famIncomes[Number(message)];
+      return questions[1][lang]+value;
       break;
     case 4:
       if(message === "yes" || message === "si"){
         return questions[2][lang];
       }
+      if(message === "no"){
+        return questions[3];
+      }
       break;
     default:
-      return "Please call __ if you have any questions regarding the SNAP program";
+      return "Please call 214-269-0906 if you have any questions regarding the SNAP program";
   }
   return '$INVALID$'; // invalid response
 }
