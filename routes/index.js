@@ -46,8 +46,8 @@ var responses = {
      'Exelente! Favor de marcar 214-269-0906 para completar su aplicacion. Que tenga un buen dia!'],
   4:['What size is your family? (example: 4)',
      'De que tamaño es su familia? (ejemplo: 4)'],
-  5:['Is your household income less than $',
-     'Es el ingreso de su hogar menos de $'],
+  5:['Is your monthly household income less than $',
+     'Es el ingreso mensual de su hogar menos de $'],
   6:["While you don't qulify for automatic benefits, your family may still be eligible for the SNAP program. Please call 214-269-0906 to complete your application. Have a good day!",
      'Mientras no califica para beneficios automaticos, es posible que su familia todavia pueda calificar para el programa SNAP. Favor de marcar 214-269-0906 para completar su aplicacion. Que tenga un buen dia!'],
   8:['Congratulations! You qualify for the SNAP program. Please call 214-269-0906 to complete your application. Have a good day!',
@@ -130,6 +130,10 @@ router.post('/sms', function(req, res, next) {
       next = currentNode.right;
       if(next == null){
         next = tree;
+        setTimeout(function(){
+          // send referral message
+          log
+        }, 10000);
       }
 
       if(next.id >= 0) req.session.msgCode = next.id;
