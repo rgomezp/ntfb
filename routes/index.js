@@ -130,10 +130,6 @@ router.post('/sms', function(req, res, next) {
       next = currentNode.right;
       if(next == null){
         next = tree;
-        setTimeout(function(){
-          // send referral message
-          log
-        }, 10000);
       }
 
       if(next.id >= 0) req.session.msgCode = next.id;
