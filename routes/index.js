@@ -94,7 +94,7 @@ router.post('/sms', function(req, res, next) {
     let logic = currentNode.logic;
 
     // get msg
-    let message = req.body.Body.toLowerCase().split(' ')[0];
+    let message = req.body.Body.toLowerCase().trim();
     let response;
 
     // get lang
