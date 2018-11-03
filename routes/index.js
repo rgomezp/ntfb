@@ -15,7 +15,7 @@ class Node{
 }
 
 const tree = new Node(0, false, {}, null, new Node(1, false, {1:'', 2:''}, null,
-  new Node(3, true, {'yes':'left', 'no': 'right'},
+  new Node(3, true, {'yes':'left', 'si':'left', 'no': 'right'},
     new Node(2, false, {}, null, null),
     new Node(4, false, {}, null,
       new Node(5, false,{
@@ -29,7 +29,7 @@ const tree = new Node(0, false, {}, null, new Node(1, false, {1:'', 2:''}, null,
         8:'',
         9:''
       }, null,
-        new Node(7, true, {'no':'left', 'yes':'right'},
+        new Node(7, true, {'no':'left','si':'right', 'yes':'right'},
           new Node(6, false, {}, null, null),
           new Node(8, false, {}, null, null)
         ))
@@ -41,13 +41,13 @@ var responses = {
   0:['Hello! You may qualify for the Supplemental Nutrition Assistance Program (SNAP). To continue in English, type 1\n------------\nHola! Su hogar puede ser elegible para el Supplemental Nutrition Assistance Program (SNAP). Para continuar en Español, envie 2',
      'Hello! You may qualify for the Supplemental Nutrition Assistance Program (SNAP). To continue in English, type 1\n------------\nHola! Su hogar puede ser elegible para el Supplemental Nutrition Assistance Program (SNAP). Para continuar en Español, envie 2'],
   1:['Do you currently get state benefits? (yes/no)',
-     'Usted recibe beneficios del estado actualmente?'],
+     'Usted recibe beneficios del estado actualmente? (si/no)'],
   2:['Great! Please call 214-269-0906 to complete your application. Have a good day!',
      'Exelente! Favor de marcar 214-269-0906 para completar su aplicacion. Que tenga un buen dia!'],
   4:['What size is your family? (example: 4)',
      'De que tamaño es su familia? (ejemplo: 4)'],
-  5:['Is your household income less than ',
-     'Es el ingreso de su hogar menos de '],
+  5:['Is your household income less than $',
+     'Es el ingreso de su hogar menos de $'],
   6:["While you don't qulify for automatic benefits, your family may still be eligible for the SNAP program. Please call 214-269-0906 to complete your application. Have a good day!",
      'Mientras no califica para beneficios automaticos, es posible que su familia todavia pueda calificar para el programa SNAP. Favor de marcar 214-269-0906 para completar su aplicacion. Que tenga un buen dia!'],
   8:['Congratulations! You qualify for the SNAP program. Please call 214-269-0906 to complete your application. Have a good day!',
@@ -55,11 +55,11 @@ var responses = {
 }
 
 const familyIncome = {
-  1:"$1659",
-  2:"$2233",
-  3:"$2808",
-  4:"$3383",
-  5:"$3958"
+  1:"1659",
+  2:"2233",
+  3:"2808",
+  4:"3383",
+  5:"3958"
 }
 
 function setLang(value){
@@ -121,6 +121,9 @@ router.post('/sms', function(req, res, next) {
         if(currentNode.id===5){
           // get direction based on income and family size
           let income = familyIncome[Number(message)];
+          if(!income && Number(message) > 5){
+            income = Number(familyIncome[5])+Number((Number(message)-5)*575);
+          }else response = "Something went wrong";
           response = responses[currentNode.id][lang] + income + '?';
         }else response = responses[currentNode.id][lang];
       }
