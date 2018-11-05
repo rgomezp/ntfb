@@ -5,39 +5,40 @@ const MessagingResponse = require('twilio').twiml.MessagingResponse;
 var router = express.Router();
 
 class Node{
-  constructor(id, double, logic, left, right){
+  constructor(id, double, left, right){
     this.id = id;
     this.double = double;
-    this.logic = logic;
     this.left = left;
     this.right = right;
   }
 }
 
-const tree = new Node(0, false, {}, null, new Node(1, false, {1:'', 2:''}, null,
-  new Node(3, true, {'yes':'left', 'si':'left', 'no': 'right'},
-    new Node(2, false, {}, null, null),
-    new Node(4, false, {}, null,
-      new Node(5, false,{
-        1:'',
-        2:'',
-        3:'',
-        4:'',
-        5:'',
-        6:'',
-        7:'',
-        8:'',
-        9:''
-      }, null,
-        new Node(7, true, {'no':'left','si':'right', 'yes':'right'},
-          new Node(6, false, {}, null, null),
-          new Node(8, false, {}, null, null)
+const tree = new Node(0, false, null, new Node(1, false, null,
+  new Node(3, true,
+    new Node(2, false, null, null),
+    new Node(4, false, null,
+      new Node(5, false, null,
+        new Node(7, true,
+          new Node(6, false, null, null),
+          new Node(8, false, null, null)
         ))
     )
   )
 ));
 
-var responses = {
+const validLogic = {
+  0:{},
+  1:{1:'', 2:''},
+  2:{},
+  3:{'no':'right','si': 'left', 'yes':'left'},
+  4:{},
+  5:{1:'',2:'',3:'',4:'',5:'',6:'',7:'',8:'',9:'',10:''},
+  6:{},
+  7:{'no':'left','si': 'right', 'yes':'right'},
+  8:{}
+}
+
+const responses = {
   0:['Hello! You may qualify for the Supplemental Nutrition Assistance Program (SNAP). To continue in English, type 1\n------------\nHola! Su hogar puede ser elegible para el Supplemental Nutrition Assistance Program (SNAP). Para continuar en Español, envie 2',
      'Hello! You may qualify for the Supplemental Nutrition Assistance Program (SNAP). To continue in English, type 1\n------------\nHola! Su hogar puede ser elegible para el Supplemental Nutrition Assistance Program (SNAP). Para continuar en Español, envie 2'],
   1:['Do you currently get state benefits? (yes/no)',
@@ -91,7 +92,7 @@ router.post('/sms', function(req, res, next) {
 
     // find node, logic
     let currentNode = findNode(tree, msgCode);
-    let logic = currentNode.logic;
+    let logic = validLogic[currentNode.id];
 
     // get msg
     let message = req.body.Body.toLowerCase().trim();
@@ -106,11 +107,10 @@ router.post('/sms', function(req, res, next) {
     else invalid = true;
 
     // check if msg is valid
-    if(Object.keys(currentNode.logic).indexOf(message) === -1) invalid = true;
+    if(Object.keys(logic).indexOf(message) === -1) invalid = true;
 
     if(invalid && currentNode.id > 0) response = "Please type a valid response";
     else{
-      response;
       var next;
       // get next node
       if(currentNode.double){
