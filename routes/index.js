@@ -81,7 +81,6 @@ function findNode(node, id){
   }
 }
 
-/* GET home page. */
 router.post('/sms', function(req, res, next) {
   try{
     let invalid = false;
